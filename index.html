@@ -7,35 +7,48 @@
     <title>Document</title>
 
     <style>
-        img {max-width: 300px;}
+        html{
+            font-family: sans-serif;
+        }
+        img {max-width: 200px;}
         h2{font-weight: 900; font-size: 15px;}
+        a{font-weight: 900}
+        p{margin-bottom: 2em;}
     </style>
 </head>
 <body>
     <h1>tyd wants ur data</h1>
-    <p>read the basics  <a href="https://en.wikipedia.org/wiki/Tidy_data">here</a> and nerd out <a href="http://vita.had.co.nz/papers/tidy-data.html">here</a></h2>
-    
-    <p>It turns this</p>
+
+    <p>it turns this</p>
     <img  src="before.png" alt="">
-
-
     <p>into this</p>
     <img   src="after.png" alt="">
-
-    <br>
-    <br>
-    <br>
-
-    <h2>use the library hosted here <a href=""></a></h2>
     
-    <h2>Input CSV</h2>
+    <p>read the <a href="https://en.wikipedia.org/wiki/Tidy_data">basics</a> and <a href="http://vita.had.co.nz/papers/tidy-data.html">nerd out</a></h2>
+    <p>use the <a href="https://github.com/JamesBenedict/tyd">function</a> in your code</p>
+    <p>or use the plaintext tool below</p>
+    
+    <h2>Input CSV &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button id="convert">convert</button></h2> 
     <textarea name="" id="input" cols="100" rows="10"></textarea>
     </textarea>
-
-    <h2>Output tyd CSV</h2>
+    <h2>Output tyd CSV &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button id="download">download</button></h2>
     <textarea name="" id="output" cols="100" rows="10"></textarea>
+    <script src="tyd.js"></script>
+    <script>
+        document.getElementById("convert").addEventListener("click", convert);
+        document.getElementById("download").addEventListener("click", download);
 
+    
 
+        function convert() {
+            document.getElementById("input").innerHTML = "y u click";
+        }
 
+        function download(){
+            document.getElementById("output").innerHTML = "y u click";
+
+        }
+    
+    </script>
 </body>
 </html>
