@@ -17,37 +17,103 @@
     </style>
 </head>
 <body>
-    <h1>tyd wants ur data</h1>
+    <h1>make your data tyd</h1>
 
+    
+    <p>use the <a href="https://raw.githubusercontent.com/JamesBenedict/tyd/master/tyd.js">function</a> in your code if you want an object returned</p>
+    <p>or use the plaintext tool below if you prefer csv/tsv</p>
+    
+    <h2>Input CSV/TSV &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="text" id="yAxisName" placeholder="input y-axis Name"><button id="convert">convert</button></h2> 
+    <textarea name="" id="input" cols="100" rows="10"></textarea>
+    </textarea>
+    <h2>Output tyd CSV &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button id="download">download</button></h2>
+    <textarea name="" id="output" cols="100" rows="10"></textarea>
+
+    <p>read the <a href="https://en.wikipedia.org/wiki/Tidy_data">basics</a> or <a href="http://vita.had.co.nz/papers/tidy-data.html">nerd out</a></h2>
+    <p style="font-weight: 900;">tl;dr:</p>
     <p>it turns this</p>
     <img  src="before.png" alt="">
     <p>into this</p>
     <img   src="after.png" alt="">
     
-    <p>read the <a href="https://en.wikipedia.org/wiki/Tidy_data">basics</a> and <a href="http://vita.had.co.nz/papers/tidy-data.html">nerd out</a></h2>
-    <p>use the <a href="https://github.com/JamesBenedict/tyd">function</a> in your code</p>
-    <p>or use the plaintext tool below</p>
     
-    <h2>Input CSV &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button id="convert">convert</button></h2> 
-    <textarea name="" id="input" cols="100" rows="10"></textarea>
-    </textarea>
-    <h2>Output tyd CSV &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button id="download">download</button></h2>
-    <textarea name="" id="output" cols="100" rows="10"></textarea>
     <script src="tyd.js"></script>
     <script>
+//         const z = [{1900: "1", 1991: "2", 1992: "3", a: "b"}, {1990: "4", 1991: "6", 1992: "7", a: "c"}, {1990: "5", 1991: "9", 1992: "8", a: "d"}]
+// console.log('as')
+// tyd(z, 'a')
+
         document.getElementById("convert").addEventListener("click", convert);
         document.getElementById("download").addEventListener("click", download);
 
+       
     
 
         function convert() {
-            document.getElementById("input").innerHTML = "y u click";
+            function formatObject(headers, cells) {
+            return headers.reduce((result, header, idx) => {
+                result[header] = cells[idx];
+                return result;
+            }, {});
+            }
+
+            // document.getElementById("input").innerHTML = "y u click";
+            var input = document.getElementById("input").value;
+            let rows = input.split(/[\r\n]+/g).map(row => row.trim().split(/[/,/\t]+/g));
+            let header = rows[0];
+            let data = rows.slice(1);
+
+            let results = []
+            let count = 0
+            data.reduce((res, row, idx) => {
+                let value = formatObject(header, row);
+                results[count] = value
+                count += 1
+            }, {});
+            const yAxisName = document.getElementById('yAxisName').value
+            const tydData = tyd(results, yAxisName) 
+            
+            var jsonObject = JSON.stringify(tydData);
+
+            function ConvertToCSV(objArray) {
+            var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+            let str = Object.keys(array[0]) + '\r\n'
+           
+            
+           
+
+            for (var i = 0; i < array.length; i++) {
+                var line = '';
+                for (var index in array[i]) {
+                    if (line != '') line += ','
+                    
+
+                    line += array[i][index];
+                }
+
+                str += line + '\r\n';
+            }
+
+            return str;
+        }
+
+            document.getElementById('output').value = ConvertToCSV(jsonObject)
+            return ConvertToCSV(jsonObject)
+
+            
         }
 
         function download(){
-            document.getElementById("output").innerHTML = "y u click";
-
-        }
+            const inputData = convert()
+            var d = 'data:text/csv;charset=utf-8,' + encodeURIComponent(inputData)
+            console.log(d)
+            var link = document.createElement('a')
+            link.setAttribute('href', d);
+            link.setAttribute('download', 'data.csv')
+            document.body.appendChild(link)
+            link.click();
+            link.remove();
+        }   
     
     </script>
 </body>
