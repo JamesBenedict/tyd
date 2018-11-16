@@ -1,3 +1,5 @@
+// data input should be an array of objects. if you use a dice inset the 'import data from './data.csv';' works perfectly.
+// if you need to feed in a csv and other way, the index.html's script has something to convert plaintext csv to an arrray of objects
 function tyd(data, yAxisKeyName) {
     const formattedData = []
     let count = 0
